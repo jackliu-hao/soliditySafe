@@ -19,7 +19,7 @@ help:
 
 # anvil :; 定义了一个名为 anvil 的目标。冒号 : 后面的分号 ; 表示在同一行执行命令。
 # --block-time 10  加上这个参数就是 每10秒出一个区块
-anvil :; anvil  -m 'test test test test test test test test test test test junk' --steps-tracing 
+anvil :; anvil  -m 'test test test test test test test test test test test junk' --steps-tracing  --block-time 10
 
 build:; forge build
 
@@ -93,7 +93,7 @@ getContractBalance:
 	cast from-wei $$BALANCE
 	
 
-#调用合约(写数据)，存钱 10ETH ,指定使用账户ACCOUNT2_PRIVATE
+#调用合约(写数据)，存钱 100ETH ,指定使用账户ACCOUNT2_PRIVATE
 deposit:
 	@cast send $(CONTRACT_ADDRESS) "deposit()" --value 100ether --private-key $(ACCOUNT2_PRIVATE) --rpc-url=$(LOCAL_RPC) 
 
@@ -119,18 +119,26 @@ prettyCalldata:
 
 # Eval合约交互
 EVAL_ADDRESS := 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
-ACCOUNT3 := 0xf4C66dd42F820D2CAa69BEaf10F567A8b30036e3
-ACCOUNT3_PRIVATE := 0x2d9497b2c10310eb56947080553be2b379c6895e77d389a13b42460c02a93487
+ACCOUNT3 := 0x993Ce570f0d586aBB16Ed4644B759028d8Bb2349
+ACCOUNT3_PRIVATE := 0xc2bf94d3308f7c223c0f8d71429d6cd61fb98a8139f2dfa8bb22c2d778f06111
 
 getEvalBalance:
 	@cast call $(EVAL_ADDRESS) "getBanlance()"  --private-key $(ACCOUNT3_PRIVATE) --rpc-url=$(LOCAL_RPC)
 
 attack:
-	@cast send $(EVAL_ADDRESS) "attack()" --value 1ether  --private-key $(ACCOUNT3_PRIVATE) --rpc-url=$(LOCAL_RPC)
+	@cast send $(EVAL_ADDRESS) "attack()" --value 1ether  --private-key $(ACCOUNT2_PRIVATE) --rpc-url=$(LOCAL_RPC)
 
 getEvalBalanceInbank:
-	@BALANCE=$(shell cast call $(EVAL_ADDRESS) "getBanlance()"  --private-key $(ACCOUNT3_PRIVATE) --rpc-url=$(LOCAL_RPC));\
+	@BALANCE=$(shell cast call $(EVAL_ADDRESS) "getBanlance()"  --private-key $(ACCOUNT2_PRIVATE) --rpc-url=$(LOCAL_RPC));\
 	echo "Balance (raw): $$BALANCE" ;\
 	cast from-wei $$BALANCE
 
-
+#  攻击测试过程
+# 1、查看Bank合约余额 （初始为0） make getContractBalance
+# 2、使用账户2想合约存入100ETH    make deposit 
+# 3、查看Bank合约余额 （100ETH）  make getContractBalance
+# 4、查看Eval合约在Bank合约中的余额 （初始为0） make getEvalBalanceInbank
+# 5、调用Eval合约中的attack函数 make attack
+# 6、查看Bank合约余额 （0） make getContractBalance
+# 7、查看Eval合约余额 （101Eth） make getEvalBalanceInbank 
+# 攻击成功 

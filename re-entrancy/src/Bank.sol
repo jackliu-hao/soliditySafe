@@ -14,11 +14,12 @@ contract Bank {
     function withdraw() external {
         uint256 balance = balanceOf[msg.sender]; // 获取余额
         require(balance > 0, "Insufficient balance");
-        // 转账 ether !!! 可能激活恶意合约的fallback/receive函数，有重入风险！
+        // 更新余额
+        // 检查-效果-交互模式（checks-effect-interaction）：先更新余额变化，再发送ETH
+        // 重入攻击的时候，balanceOf[msg.sender]已经被更新为0了，不能通过上面的检查。
+        balanceOf[msg.sender] = 0;
         (bool success,) = msg.sender.call{value: balance}("");
         require(success, "Failed to send Ether");
-        // 更新余额
-        balanceOf[msg.sender] = 0;
     }
 
     // 获取银行合约的余额
