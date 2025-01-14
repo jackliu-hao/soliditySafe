@@ -10,6 +10,6 @@
 # Docs
 */docs/
 **/.env
-
+**/lib/**/
 # Dotenv file
 .env

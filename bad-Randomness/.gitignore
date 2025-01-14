@@ -9,8 +9,6 @@ out/
 
 # Docs
 docs/
-# 忽略lib目录下的所有文件
-lib/**
-
+lib/**/**/
 # Dotenv file
 .env

@@ -1,9 +1,9 @@
-[submodule "Centralization/lib/forge-std"]
-	path = Centralization/lib/forge-std
+[submodule "bad-Randomness/lib/forge-std"]
+	path = bad-Randomness/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "Signature-Replay/lib/forge-std"]
-	path = Signature-Replay/lib/forge-std
-	url = https://github.com/foundry-rs/forge-std
-[submodule "Signature-Replay/lib/openzeppelin-contracts"]
-	path = Signature-Replay/lib/openzeppelin-contracts
+[submodule "bad-Randomness/lib/openzeppelin-contracts"]
+	path = bad-Randomness/lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "re-entrancy/lib/forge-std"]
+	path = re-entrancy/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std

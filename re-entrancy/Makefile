@@ -20,6 +20,8 @@ help:
 # anvil :; 定义了一个名为 anvil 的目标。冒号 : 后面的分号 ; 表示在同一行执行命令。
 # --block-time 10  加上这个参数就是 每10秒出一个区块
 anvil :; anvil  -m 'test test test test test test test test test test test junk' --steps-tracing 
+install:
+	@forge install foundry-rs/forge-std --no-commit
 
 build:; forge build
 
