@@ -7,3 +7,6 @@
 [submodule "re-entrancy/lib/forge-std"]
 	path = re-entrancy/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "byPass-contractLength/lib/forge-std"]
+	path = byPass-contractLength/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
